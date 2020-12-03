@@ -16,20 +16,20 @@ export default {
   data() {
     return {
       info: {
-        isAdd: false,
-        isShow: false
-      }
+        isAdd: true,
+        isShow: true,
+      },
     };
   },
   components: {
     VList,
-    VInfo
+    VInfo,
   },
   methods: {
     add() {
       this.info.isAdd = this.info.isShow = true;
-    }
-  }
+    },
+  },
 };
 </script>
 

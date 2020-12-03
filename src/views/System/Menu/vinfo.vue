@@ -6,23 +6,40 @@
       width="40%"
     >
       <!-- 表单 -->
-      <!-- <el-form
-        :model="form"
-        ref="form"
-        :rules="rules"
-        label-width="80px"
-        :inline="false"
-        size="normal"
-      >
-        <el-form-item label="">
-          <el-input v-model="form.forminfo"></el-input>
+      <el-form :model="forminfo" ref="form" label-width="180px">
+        <el-form-item label="菜单类型">
+          <el-radio-group v-model="forminfo.type">
+            <el-radio :label="1">目录</el-radio>
+            <el-radio :label="2">菜单</el-radio>
+          </el-radio-group>
         </el-form-item>
-      </el-form> -->
+        <el-form-item label="菜单名称">
+          <el-input v-model="forminfo.title" placeholder="请输入菜单名称">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="目录图标">
+          <el-input v-model="forminfo.icon" placeholder="请输入目录图标">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="菜单地址">
+          <el-input v-model="forminfo.url" placeholder="请输入菜单地址">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="状态">
+          <el-switch
+            v-model="forminfo.status"
+            :active-value="1"
+            :inactive-value="2"
+          >
+          </el-switch>
+        </el-form-item>
+        <el-form-item label="">
+          <el-button type="primary" @click="submit">提交</el-button>
+          <el-button type="warning" @click="reset">重置</el-button>
+        </el-form-item>
+      </el-form>
 
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="info.isShow = false">取 消</el-button>
-        <el-button type="primary" @click="submit">确 定</el-button>
-      </span>
+      <span slot="footer" class="dialog-footer"> </span>
     </el-dialog>
   </div>
 </template>
@@ -34,23 +51,32 @@ export default {
       type: Object,
       default() {
         return {
+          forminfo: {
+            pid: 0,
+            title: "",
+            icon: "",
+            type: 1,
+            url: "",
+            status: 1,
+          },
           isAdd: true,
-          isShow: false
+          isShow: false,
         };
-      }
-    }
+      },
+    },
   },
   data() {
     return {
-      forminfo: {}
+      forminfo: {},
     };
   },
   components: {},
   methods: {
     submit() {
       this.info.isShow = false;
-    }
-  }
+    },
+    reset() {},
+  },
 };
 </script>
 

@@ -39,15 +39,15 @@ export default {
         { id: 3, title: "qweeqwe", content: "sdweerwrr" },
         { id: 4, title: "qweeqwe", content: "sdweerwrr" },
         { id: 5, title: "qweeqwe", content: "sdweerwrr" },
-        { id: 6, title: "qweeqwe", content: "sdweerwrr" }
-      ]
+        { id: 6, title: "qweeqwe", content: "sdweerwrr" },
+      ],
     };
   },
   components: {},
   methods: {
     edit() {},
-    del() {}
-  }
+    del() {},
+  },
 };
 </script>
 
