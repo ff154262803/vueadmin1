@@ -1,0 +1,36 @@
+<template>
+  <div class="">
+    <el-button type="primary" @click="add">添加菜单</el-button>
+    <!-- 列表组件 -->
+    <v-list></v-list>
+    <!-- 添加/修改组件 -->
+    <v-info :info="info"></v-info>
+  </div>
+</template>
+
+<script>
+import VList from "./vlist";
+import VInfo from "./vinfo";
+export default {
+  name: "",
+  data() {
+    return {
+      info: {
+        isAdd: false,
+        isShow: false
+      }
+    };
+  },
+  components: {
+    VList,
+    VInfo
+  },
+  methods: {
+    add() {
+      this.info.isAdd = this.info.isShow = true;
+    }
+  }
+};
+</script>
+
+<style scoped></style>
