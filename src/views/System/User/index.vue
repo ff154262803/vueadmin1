@@ -1,18 +1,16 @@
 <template>
-    <div class="">管理员管理</div>
+  <div>管理员管理</div>
 </template>
 
-<script >
+<script>
 export default {
-    name: "",
-    data() {
-        return {}
-    },
-    components: {},
-    methods: {}
-}
+  data() {
+    return {};
+  },
+  created() {},
+  methods: {},
+  components: {},
+};
 </script>
-
 <style scoped>
-
 </style>
