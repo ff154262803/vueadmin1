@@ -5,6 +5,7 @@
       :visible.sync="info.isShow"
       width="40%"
       :destroy-on-close="true"
+      @close="cancel"
     >
       <!-- 表单 -->
       <el-form :model="forminfo" ref="form" :rules="rules" label-width="140px">
@@ -131,7 +132,7 @@ export default {
             this.info.isShow = false;
             this.get_menu_list();
 
-            this.forminfo = { ...resetItem };
+            this.cancel();
           } else {
             this.$message.error(res.msg);
           }
@@ -139,7 +140,14 @@ export default {
       });
     },
     reset() {
-      this.forminfo = { ...defaultItem };
+      if (this.info.isAdd) {
+        this.forminfo = { ...resetItem };
+      } else {
+        this.setinfo({ ...defaultItem });
+      }
+    },
+    cancel() {
+      this.forminfo = { ...resetItem };
     },
   },
 };

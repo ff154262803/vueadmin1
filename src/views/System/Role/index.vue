@@ -27,9 +27,8 @@ export default {
     VInfo,
   },
   methods: {
-    add(val) {
+    add() {
       this.info.isAdd = this.info.isShow = true;
-      this.$refs.dialog.setinfo(val);
     },
     edti(val) {
       this.info.isAdd = false;

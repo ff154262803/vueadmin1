@@ -1,16 +1,42 @@
 <template>
-  <div>管理员管理</div>
+  <div class="">
+    <el-button type="primary" @click="add">添加管理员</el-button>
+    <!-- 列表组件 -->
+    <v-list @edit="edti"></v-list>
+    <!-- 添加/修改组件 -->
+    <v-info :info="info" ref="dialog"></v-info>
+  </div>
 </template>
 
 <script>
+import VList from "./vlist";
+import VInfo from "./vinfo";
+
 export default {
+  name: "",
   data() {
-    return {};
+    return {
+      info: {
+        isAdd: false,
+        isShow: false,
+      },
+    };
   },
-  created() {},
-  methods: {},
-  components: {},
+  components: {
+    VList,
+    VInfo,
+  },
+  methods: {
+    add() {
+      this.info.isAdd = this.info.isShow = true;
+    },
+    edti(val) {
+      this.info.isAdd = false;
+      this.info.isShow = true;
+      this.$refs.dialog.setinfo(val);
+    },
+  },
 };
 </script>
-<style scoped>
-</style>
+
+<style scoped></style>
