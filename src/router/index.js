@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
+import store from '@/store';
 Vue.use(Router)
 
 let router = new Router({
@@ -42,7 +42,23 @@ let router = new Router({
   ]
 })
 router.beforeEach((to, from, next) => {
-  document.title = to.meta.title
-  next()
+  if (to.path == "/login") {
+    document.title = to.meta.title
+    next()
+  } else {
+    if (localStorage.getItem('userinfo')) { 
+      let whiteList = store.getters['user/menus_url']
+      whiteList.push('/index')
+      if (whiteList.includes(to.path)) {
+    document.title = to.meta.title
+
+        next()
+      }
+    }
+    else {
+      next("/login")
+    }
+  }
+ 
 })
 export default router;

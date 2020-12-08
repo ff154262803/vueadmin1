@@ -2,15 +2,15 @@
   <el-row class="login-bg">
     <el-col :span="6" class="login-box">
       <h3>文旅平台管理系统</h3>
-      <el-form :model="forminfo" ref="form">
-        <el-form-item>
+      <el-form :model="forminfo" ref="form" :rules="rules">
+        <el-form-item prop="username">
           <el-input v-model="forminfo.username" placeholder="请输入账号">
             <template slot="prepend">
               <i class="el-icon-user"></i>
             </template>
           </el-input>
         </el-form-item>
-        <el-form-item>
+        <el-form-item prop="password">
           <el-input
             v-model="forminfo.password"
             placeholder="请输入密码"
@@ -22,7 +22,7 @@
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-button class="login-btn" type="primary" @click="login"
+          <el-button class="login-btn" type="primary" @click="submit()"
             >立即登录</el-button
           >
         </el-form-item>
@@ -32,19 +32,33 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   name: "",
   data() {
     return {
       forminfo: {
-        username: "",
-        password: ""
+        username: "付晓飞",
+        password: "123456"
+      },
+      rules: {
+        username: [{ required: true, message: "必填", trigger: "blur" }],
+        password: [{ required: true, message: "必填", trigger: "blur" }]
       }
     };
   },
   components: {},
   methods: {
-    login() {}
+    ...mapActions({
+      login: "user/login"
+    }),
+    submit() {
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          this.login(this.forminfo);
+        }
+      });
+    }
   }
 };
 </script>

@@ -25,3 +25,15 @@ export function editUser(data) {
 export function delUser(uid) {
   return $axios.post('/userdelete', { uid })
 }
+
+export async  function getTotal() {
+  let res = await $axios.get("/usercount")
+  return res.list[0].total
+
+};
+//管理员登录
+export  function Login(data) {
+  return $axios.post('/userlogin',data)
+};
+
+

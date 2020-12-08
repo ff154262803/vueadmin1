@@ -25,7 +25,10 @@
           </el-input>
         </el-form-item>
         <el-form-item label="管理员密码" prop="password">
-          <el-input v-model="forminfo.password" placeholder="请输入管理员密码">
+          <el-input
+            v-model="forminfo.password"
+            :placeholder="info.isAdd ? '修改密码' : '密码留空表示不修改'"
+          >
           </el-input>
         </el-form-item>
         <el-form-item label="管理员状态">
@@ -54,10 +57,10 @@ let defaultItem = {
   roleid: "",
   password: "",
   username: "",
-  status: 1,
+  status: 1
 };
 let resetItem = {
-  ...defaultItem,
+  ...defaultItem
 };
 export default {
   props: {
@@ -66,24 +69,24 @@ export default {
       default() {
         return {
           isAdd: true,
-          isShow: true,
+          isShow: true
         };
-      },
-    },
+      }
+    }
   },
   data() {
     return {
       forminfo: { ...defaultItem },
       rules: {
         roleid: [{ required: true, message: "必填", trigger: "blur" }],
-        username: [{ required: true, message: "必填", trigger: "blur" }],
-      },
+        username: [{ required: true, message: "必填", trigger: "blur" }]
+      }
     };
   },
   computed: {
     ...mapGetters({
-      rolelist: "role/rolelist",
-    }),
+      rolelist: "role/rolelist"
+    })
   },
   mounted() {
     if (!this.rolelist.length) {
@@ -94,18 +97,10 @@ export default {
   methods: {
     ...mapActions({
       get_role_list: "role/get_role_list",
-      get_user_list: "user/get_user_list",
+      get_user_list: "user/get_user_list"
     }),
     setinfo(val) {
-      console.log(val);
-      let idarr = val.menus.split(",");
-      if (idarr[0]) {
-        this.checkStrictly = true;
-        this.$nextTick(() => {
-          this.$refs.tree.setCheckedKeys(idarr);
-          this.checkStrictly = false;
-        });
-      }
+      val.password = "";
       defaultItem = { ...val };
       this.forminfo = { ...val };
     },
@@ -114,7 +109,7 @@ export default {
         this.$message.warning("请输入密码");
         return;
       }
-      this.$refs.form.validate(async (valid) => {
+      this.$refs.form.validate(async valid => {
         if (valid) {
           let res;
           if (this.info.isAdd) {
@@ -142,8 +137,8 @@ export default {
     },
     cancel() {
       this.forminfo = { ...resetItem };
-    },
-  },
+    }
+  }
 };
 </script>
 

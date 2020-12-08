@@ -50,10 +50,10 @@ import { mapGetters, mapActions } from "vuex";
 let defaultItem = {
   rolename: "",
   menus: "",
-  status: 1,
+  status: 1
 };
 let resetItem = {
-  ...defaultItem,
+  ...defaultItem
 };
 export default {
   props: {
@@ -62,24 +62,24 @@ export default {
       default() {
         return {
           isAdd: true,
-          isShow: true,
+          isShow: true
         };
-      },
-    },
+      }
+    }
   },
   data() {
     return {
       forminfo: { ...defaultItem },
       rules: {
-        rolename: [{ required: true, message: "必填", trigger: "blur" }],
+        rolename: [{ required: true, message: "必填", trigger: "blur" }]
       },
-      checkStrictly: false,
+      checkStrictly: false
     };
   },
   computed: {
     ...mapGetters({
-      menulist: "menu/menulist",
-    }),
+      menulist: "menu/menulist"
+    })
   },
   mounted() {
     if (!this.menulist.length) {
@@ -90,7 +90,7 @@ export default {
   methods: {
     ...mapActions({
       get_menu_list: "menu/get_menu_list",
-      get_role_list: "role/get_role_list",
+      get_role_list: "role/get_role_list"
     }),
     setinfo(val) {
       console.log(val);
@@ -115,7 +115,7 @@ export default {
         this.$message.warning("请选择权限");
         return;
       }
-      this.$refs.form.validate(async (valid) => {
+      this.$refs.form.validate(async valid => {
         if (valid) {
           let res;
           if (this.info.isAdd) {
@@ -145,8 +145,8 @@ export default {
     cancel() {
       this.forminfo = { ...resetItem };
       this.$refs.tree.setCheckedKeys([]);
-    },
-  },
+    }
+  }
 };
 </script>
 
