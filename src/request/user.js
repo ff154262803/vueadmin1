@@ -37,6 +37,7 @@ export function editUser(data) {
 export function delUser(uid) {
     return $axios.post("/userdelete", { uid})
 }
+<<<<<<< HEAD
 // 获取管理个数
 export async function getTotal(){
     let res = await $axios.get("/usercount")
@@ -47,3 +48,17 @@ export async function getTotal(){
 export function Login(data) {
     return $axios.post("/userlogin", data)
 }
+=======
+
+export async  function getTotal() {
+  let res = await $axios.get("/usercount")
+  return res.list[0].total
+
+};
+//管理员登录
+export  function Login(data) {
+  return $axios.post('/userlogin',data)
+};
+
+
+>>>>>>> 565f63694d7f1ae58867cae1b8d18c5be258d04f

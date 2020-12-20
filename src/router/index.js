@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+<<<<<<< HEAD
 
 // 这段代码为了解决 element-ui 同路由强制跳转到同路由报错问题，原因是 element-ui和路由的版本冲突！
 const originalPush = Router.prototype.push
@@ -9,6 +10,9 @@ Router.prototype.push = function push(location) {
 
 import store from "@/store"
 
+=======
+import store from '@/store';
+>>>>>>> 565f63694d7f1ae58867cae1b8d18c5be258d04f
 Vue.use(Router)
 
 let router =  new Router({
@@ -78,6 +82,7 @@ let router =  new Router({
     }
   ]
 })
+<<<<<<< HEAD
 
 router.beforeEach((to,from,next)=>{
   if (to.path=="/login"){  // 1、要去的地址是登录页面！
@@ -95,6 +100,27 @@ router.beforeEach((to,from,next)=>{
       next('/login')
     }
   }
+=======
+router.beforeEach((to, from, next) => {
+  if (to.path == "/login") {
+    document.title = to.meta.title
+    next()
+  } else {
+    if (localStorage.getItem('userinfo')) { 
+      let whiteList = store.getters['user/menus_url']
+      whiteList.push('/index')
+      if (whiteList.includes(to.path)) {
+    document.title = to.meta.title
+
+        next()
+      }
+    }
+    else {
+      next("/login")
+    }
+  }
+ 
+>>>>>>> 565f63694d7f1ae58867cae1b8d18c5be258d04f
 })
 
 export default router;

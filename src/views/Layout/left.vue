@@ -1,5 +1,6 @@
 <template>
   <div>
+<<<<<<< HEAD
      <h3 class="logo">小U商城后台</h3>
      <!-- 菜单组件！！！ -->
      <el-menu 
@@ -19,9 +20,41 @@
           </el-submenu>
         </template>
      </el-menu>
+=======
+    <h3 class="logo">文旅平台管理系统</h3>
+    <!-- 菜单组件 -->
+    <el-menu
+      background-color="#444"
+      text-color="#fff"
+      router
+      :default-active="$route.path"
+      class="page-menu"
+      :collapse="iscollapse"
+    >
+      <div v-for="(item, index) in menus" :key="index">
+        <el-menu-item :index="item.url" v-if="item.type == 2"
+          ><i :class="item.icon"></i
+          ><span slot="title">{{ item.title }}</span></el-menu-item
+        >
+        <el-submenu v-else :index="index + ''">
+          <template slot="title"
+            ><i :class="item.icon"></i
+            ><span slot="title">{{ item.title }}</span></template
+          >
+          <el-menu-item
+            v-for="(val, idx) in item.children"
+            :key="idx"
+            :index="val.url"
+            >{{ val.title }}</el-menu-item
+          >
+        </el-submenu>
+      </div>
+    </el-menu>
+>>>>>>> 565f63694d7f1ae58867cae1b8d18c5be258d04f
   </div>
 </template>
 <script>
+<<<<<<< HEAD
 import { mapState,mapGetters } from "vuex"
 export default {
     data(){
@@ -36,6 +69,23 @@ export default {
     methods:{},
     components:{}
 }
+=======
+import { mapState, mapGetters } from "vuex";
+export default {
+  name: "",
+  data() {
+    return {};
+  },
+  computed: {
+    ...mapState(["iscollapse"]),
+    ...mapGetters({
+      menus: "user/menus"
+    })
+  },
+  components: {},
+  methods: {}
+};
+>>>>>>> 565f63694d7f1ae58867cae1b8d18c5be258d04f
 </script>
 <style scoped>
 .logo{

@@ -31,6 +31,7 @@
 import { addRole,editRole } from "@/request/role"
 import { mapGetters,mapActions } from "vuex"
 let defaultItem = {
+<<<<<<< HEAD
     rolename:"",  
     menus:"",
     status:1    // 状态1正常2禁用
@@ -55,6 +56,91 @@ export default {
                 rolename:[{required:true,message:"必填！",trigger:'blur'}],
             },
             checkStrictly:false   // false表示父子关联！ true表示父子不关联！
+=======
+  rolename: "",
+  menus: "",
+  status: 1
+};
+let resetItem = {
+  ...defaultItem
+};
+export default {
+  props: {
+    info: {
+      type: Object,
+      default() {
+        return {
+          isAdd: true,
+          isShow: true
+        };
+      }
+    }
+  },
+  data() {
+    return {
+      forminfo: { ...defaultItem },
+      rules: {
+        rolename: [{ required: true, message: "必填", trigger: "blur" }]
+      },
+      checkStrictly: false
+    };
+  },
+  computed: {
+    ...mapGetters({
+      menulist: "menu/menulist"
+    })
+  },
+  mounted() {
+    if (!this.menulist.length) {
+      this.get_menu_list();
+    }
+  },
+  components: {},
+  methods: {
+    ...mapActions({
+      get_menu_list: "menu/get_menu_list",
+      get_role_list: "role/get_role_list"
+    }),
+    setinfo(val) {
+      console.log(val);
+      let idarr = val.menus.split(",");
+      if (idarr[0]) {
+        this.checkStrictly = true;
+        this.$nextTick(() => {
+          this.$refs.tree.setCheckedKeys(idarr);
+          this.checkStrictly = false;
+        });
+      }
+      defaultItem = { ...val };
+      this.forminfo = { ...val };
+    },
+    async submit() {
+      let idarr = this.$refs.tree.getCheckedKeys();
+      //.concat(this.$refs.tree.getHalfCheckedKeys());
+      console.log(idarr);
+      if (idarr.length) {
+        this.forminfo.menus = idarr;
+      } else {
+        this.$message.warning("请选择权限");
+        return;
+      }
+      this.$refs.form.validate(async valid => {
+        if (valid) {
+          let res;
+          if (this.info.isAdd) {
+            res = await addRole(this.forminfo);
+          } else {
+            res = await editRole(this.forminfo);
+          }
+          if (res.code == 200) {
+            this.$message.success(res.msg);
+            this.info.isShow = false;
+            this.get_role_list();
+            this.cancel();
+          } else {
+            this.$message.error(res.msg);
+          }
+>>>>>>> 565f63694d7f1ae58867cae1b8d18c5be258d04f
         }
     },
     computed: {
@@ -62,6 +148,7 @@ export default {
             menulist:"menu/menulist"
         })
     },
+<<<<<<< HEAD
     mounted() {
         if(!this.menulist.length){
             this.get_menu_list();
@@ -130,6 +217,14 @@ export default {
     },
     components:{}
 }
+=======
+    cancel() {
+      this.forminfo = { ...resetItem };
+      this.$refs.tree.setCheckedKeys([]);
+    }
+  }
+};
+>>>>>>> 565f63694d7f1ae58867cae1b8d18c5be258d04f
 </script>
 <style scoped>
 </style>

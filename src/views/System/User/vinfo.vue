@@ -15,7 +15,15 @@
             <el-input v-model="forminfo.username" placeholder="请输入管理员名称"></el-input>
         </el-form-item>
         <el-form-item label="管理员密码" prop="password">
+<<<<<<< HEAD
             <el-input v-model="forminfo.password" :placeholder="info.isAdd ? '请输入密码':'留空表示不修改'"></el-input>
+=======
+          <el-input
+            v-model="forminfo.password"
+            :placeholder="info.isAdd ? '修改密码' : '密码留空表示不修改'"
+          >
+          </el-input>
+>>>>>>> 565f63694d7f1ae58867cae1b8d18c5be258d04f
         </el-form-item>
         <el-form-item label="管理员状态">
             <el-switch v-model="forminfo.status" :active-value="1" :inactive-value="2"></el-switch>
@@ -32,6 +40,7 @@
 import { addUser,editUser } from "@/request/user"
 import { mapGetters,mapActions } from "vuex"
 let defaultItem = {
+<<<<<<< HEAD
     roleid:"",  
     username:"",
     password:"",
@@ -57,6 +66,79 @@ export default {
                 roleid:[{required:true,message:"必填！",trigger:'blur'}],
                 username:[{required:true,message:"必填！",trigger:'blur'}],
             }
+=======
+  roleid: "",
+  password: "",
+  username: "",
+  status: 1
+};
+let resetItem = {
+  ...defaultItem
+};
+export default {
+  props: {
+    info: {
+      type: Object,
+      default() {
+        return {
+          isAdd: true,
+          isShow: true
+        };
+      }
+    }
+  },
+  data() {
+    return {
+      forminfo: { ...defaultItem },
+      rules: {
+        roleid: [{ required: true, message: "必填", trigger: "blur" }],
+        username: [{ required: true, message: "必填", trigger: "blur" }]
+      }
+    };
+  },
+  computed: {
+    ...mapGetters({
+      rolelist: "role/rolelist"
+    })
+  },
+  mounted() {
+    if (!this.rolelist.length) {
+      this.get_role_list();
+    }
+  },
+  components: {},
+  methods: {
+    ...mapActions({
+      get_role_list: "role/get_role_list",
+      get_user_list: "user/get_user_list"
+    }),
+    setinfo(val) {
+      val.password = "";
+      defaultItem = { ...val };
+      this.forminfo = { ...val };
+    },
+    async submit() {
+      if (this.isAdd && !this.forminfo.password) {
+        this.$message.warning("请输入密码");
+        return;
+      }
+      this.$refs.form.validate(async valid => {
+        if (valid) {
+          let res;
+          if (this.info.isAdd) {
+            res = await addUser(this.forminfo);
+          } else {
+            res = await editUser(this.forminfo);
+          }
+          if (res.code == 200) {
+            this.$message.success(res.msg);
+            this.info.isShow = false;
+            this.get_user_list();
+            this.cancel();
+          } else {
+            this.$message.error(res.msg);
+          }
+>>>>>>> 565f63694d7f1ae58867cae1b8d18c5be258d04f
         }
     },
     computed: {
@@ -64,6 +146,7 @@ export default {
             rolelist:"role/rolelist"
         })
     },
+<<<<<<< HEAD
     mounted() {
         if(!this.rolelist.length){
             this.get_role_list();
@@ -117,6 +200,13 @@ export default {
     },
     components:{}
 }
+=======
+    cancel() {
+      this.forminfo = { ...resetItem };
+    }
+  }
+};
+>>>>>>> 565f63694d7f1ae58867cae1b8d18c5be258d04f
 </script>
 <style scoped>
 </style>
