@@ -1,6 +1,6 @@
 <template>
   <div>
-     <el-button type="primary" @click="add">添加管理员</el-button>
+     <el-button type="primary" @click="add">添加分类</el-button>
      <!-- 列表组件 -->
      <v-list @edit="edit"></v-list>
      <!-- 添加/修改组件 -->
@@ -16,10 +16,10 @@ export default {
           info:{ // 这是组件的info变量！
             isAdd:false,
             isShow:false
-          },
-          list:[]
+          }
         }
     },
+    created(){},
     methods:{
       add(){
         this.info.isAdd =  this.info.isShow = true

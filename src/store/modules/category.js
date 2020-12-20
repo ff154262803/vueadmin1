@@ -1,22 +1,22 @@
 // 获取菜单列表！
-import { getRole } from "@/request/role"
+import { getCategory } from "@/request/category"
 export default {
     namespaced:true,
     state: {
-        rolelist:[]  // 角色列表
+        catelist:[]  // 菜单列表
     },
     getters: {
-        rolelist: state => state.rolelist
+        catelist: state => state.catelist
     },
     mutations: {
         SET_LIST(state,data){
-            state.rolelist = data;
+            state.catelist = data;
         }
     },
     actions: {
         // 请求菜单列表的数据！
-        async get_role_list({commit}){
-            let res = await getRole();  
+        async get_category_list({commit}){
+            let res = await getCategory();  
             commit('SET_LIST',res)
         }
     }

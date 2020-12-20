@@ -1,18 +1,15 @@
 <template>
-    <div class="">会员管理</div>
+  <div>会员管理</div>
 </template>
-
-<script >
+<script>
 export default {
-    name: "",
-    data() {
-        return {}
+    data(){
+        return{  }
     },
-    components: {},
-    methods: {}
+    created(){},
+    methods:{},
+    components:{}
 }
 </script>
-
 <style scoped>
-
 </style>
