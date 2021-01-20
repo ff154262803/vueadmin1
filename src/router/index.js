@@ -1,33 +1,27 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-<<<<<<< HEAD
-
 // 这段代码为了解决 element-ui 同路由强制跳转到同路由报错问题，原因是 element-ui和路由的版本冲突！
 const originalPush = Router.prototype.push
 Router.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)
 }
-
-import store from "@/store"
-
-=======
-import store from '@/store';
->>>>>>> 565f63694d7f1ae58867cae1b8d18c5be258d04f
+import store from '@/store'
 Vue.use(Router)
 
-let router =  new Router({
+let router = new Router({
   routes: [
     {
       path: '/login',
-      component:()=>import("@/views/Login"),
-      meta:{ title:"登录" }
+      component: () => import("@/views/Login"),
+      meta: { title: "登录" }
     },
     {
       path: '/',
       component: () => import("@/views/Layout"),
       meta: { title: "xx管理系统" },
-      redirect:"/index",
-      children:[
+      redirect: "/index",
+      children: [
+
         {
           path: '/index',
           component: () => import("@/views/Index"),
@@ -78,49 +72,29 @@ let router =  new Router({
           component: () => import("@/views/Shop/Seckill"),
           meta: { title: "秒杀管理" }
         }
+
       ]
     }
   ]
 })
-<<<<<<< HEAD
 
-router.beforeEach((to,from,next)=>{
-  if (to.path=="/login"){  // 1、要去的地址是登录页面！
-    document.title = to.meta.title
-    next();   
-  }else{  // 2、不是登录页面！就需要判断是否登录了！登录了才可以访问！
-    if(localStorage.getItem("userinfo")){  // 登录了！
-      let whiteList = store.getters['user/menus_url'];
-      whiteList.push('/index')
-      if(whiteList.includes(to.path)){  // 去的地址在 该用户可以访问的地址池中！
-        document.title = to.meta.title
-        next();
-      }
-    }else{ // 没有登录就想访问是直接跳转到登录页面！
-      next('/login')
-    }
-  }
-=======
 router.beforeEach((to, from, next) => {
   if (to.path == "/login") {
     document.title = to.meta.title
     next()
   } else {
-    if (localStorage.getItem('userinfo')) { 
+    if (localStorage.getItem('userinfo')) {
       let whiteList = store.getters['user/menus_url']
       whiteList.push('/index')
       if (whiteList.includes(to.path)) {
-    document.title = to.meta.title
-
+        document.title = to.meta.title
         next()
       }
-    }
-    else {
-      next("/login")
+    } else {
+      next('/login')
     }
   }
- 
->>>>>>> 565f63694d7f1ae58867cae1b8d18c5be258d04f
 })
+
 
 export default router;

@@ -1,14 +1,25 @@
 <template>
 <div class="table-bg">
-    <el-table :data="rolelist">
-        <el-table-column prop="id" label="ID" align="center"></el-table-column>
-        <el-table-column prop="rolename" label="角色名称" align="center"></el-table-column>
-        <el-table-column label="状态">
+    <el-table :data="list">
+        <el-table-column prop="id" label="ID" width="120" align="center"></el-table-column>
+        <el-table-column prop="title" label="活动名称" align="center"></el-table-column>
+        <el-table-column prop="begintime" label="开始时间" align="center">
             <template slot-scope="scope">
-                <el-tag type="success" v-if="scope.row.status==1">启动</el-tag>
-                <el-tag type="danger" v-if="scope.row.status==2">禁用</el-tag>
+                {{ scope.row.begintime | getTime }}
             </template>
         </el-table-column>
+        <el-table-column prop="endtime" label="结束时间" align="center">
+            <template slot-scope="scope">
+                {{ scope.row.endtime | getTime }}
+            </template>
+        </el-table-column>
+        <el-table-column label="状态">
+            <template slot-scope="scope">
+                <el-tag type="success" v-if="scope.row.status == 1">启用</el-tag>
+                <el-tag type="danger" v-if="scope.row.status == 2">禁用</el-tag>
+            </template>
+        </el-table-column>
+
         <el-table-column label="修改">
             <template slot-scope="scope">
                 <el-button type="primary" size="small" @click="edit(scope.row)" circle icon="el-icon-edit"></el-button>
@@ -21,30 +32,23 @@
 
 <script>
 import {
-    mapGetters,
-    mapActions
-} from "vuex";
-import {
-    delRole
-} from "@/request/role";
+    delSeck,
+    getSeck
+} from "@/request/seckill";
 export default {
     data() {
-        return {};
-    },
-    computed: {
-        ...mapGetters({
-            rolelist: "role/rolelist",
-        }),
+        return {
+            list: [],
+        };
     },
     mounted() {
-        if (!this.rolelist.length) {
-            this.get_role_list();
-        }
+        this.getlist();
     },
     methods: {
-        ...mapActions({
-            get_role_list: "role/get_role_list",
-        }),
+        async getlist() {
+            let res = await getSeck();
+            this.list = res;
+        },
         edit(val) {
             this.$emit("edit", {
                 ...val,
@@ -57,10 +61,10 @@ export default {
                     type: "warning",
                 })
                 .then(async () => {
-                    let res = await delRole(id);
+                    let res = await delSeck(id);
                     if (res.code == 200) {
                         this.$message.success(res.msg);
-                        this.get_role_list(); // 重新获取列表！
+                        this.getlist(); // 重新获取列表！
                     } else {
                         this.$message.error(res.msg);
                     }

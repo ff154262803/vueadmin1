@@ -1,151 +1,101 @@
 <template>
-<<<<<<< HEAD
-   <el-row class="login-bg">
-      <el-col :span="8" class="login-box">
-          <h3>小U商城管理系统</h3>
-          <el-form :model="forminfo" ref="form" :rules="rules" >
+<el-row class="login-bg">
+    <el-col :span="8" class="login-box">
+        <h3>小U商城管理系统</h3>
+        <el-form :model="forminfo" ref="form" :rules="rules">
             <el-form-item prop="username">
-              <el-input v-model="forminfo.username" placeholder="请输入账号">
-                  <template slot="prepend">
-                    <i class="el-icon-user"></i>
-                  </template>
-              </el-input>
+                <el-input v-model="forminfo.username" placeholder="请输入账号">
+                    <template slot="prepend">
+                        <i class="el-icon-user"></i>
+                    </template>
+                </el-input>
             </el-form-item>
-            <el-form-item  prop="username">
-              <el-input v-model="forminfo.password" show-password placeholder="请输入密码">
-                  <template slot="prepend">
-                    <i class="el-icon-lock"></i>
-                  </template>
-              </el-input>
+            <el-form-item prop="password">
+                <el-input v-model="forminfo.password" show-password placeholder="请输入密码">
+                    <template slot="prepend">
+                        <i class="el-icon-lock"></i>
+                    </template>
+                </el-input>
             </el-form-item>
             <el-form-item>
-              <el-button class="login-btn" type="primary" @click="submit">立即登录</el-button>
+                <el-button class="login-btn" type="primary" @click="submit">立即登录</el-button>
             </el-form-item>
-          </el-form>
-          
-      </el-col>  
-   </el-row>
-=======
-  <el-row class="login-bg">
-    <el-col :span="6" class="login-box">
-      <h3>文旅平台管理系统</h3>
-      <el-form :model="forminfo" ref="form" :rules="rules">
-        <el-form-item prop="username">
-          <el-input v-model="forminfo.username" placeholder="请输入账号">
-            <template slot="prepend">
-              <i class="el-icon-user"></i>
-            </template>
-          </el-input>
-        </el-form-item>
-        <el-form-item prop="password">
-          <el-input
-            v-model="forminfo.password"
-            placeholder="请输入密码"
-            show-password
-          >
-            <template slot="prepend">
-              <i class="el-icon-lock"></i>
-            </template>
-          </el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button class="login-btn" type="primary" @click="submit()"
-            >立即登录</el-button
-          >
-        </el-form-item>
-      </el-form>
+        </el-form>
     </el-col>
-  </el-row>
->>>>>>> 565f63694d7f1ae58867cae1b8d18c5be258d04f
+</el-row>
 </template>
+
 <script>
-<<<<<<< HEAD
-import { mapActions } from "vuex"
+import {
+    mapActions
+} from "vuex";
 export default {
-    data(){
-        return{
-           forminfo:{
-             username:"李腾飞",
-             password:"admin888"
-           },
-           rules:{
-              username:[{required:true,message:"必填！",trigger:'blur'}],
-              password:[{required:true,message:"必填！",trigger:'blur'}],
-           }
-        }
+    data() {
+        return {
+            forminfo: {
+                username: "付晓飞",
+                password: "admin888",
+            },
+            rules: {
+                // 验证规则对象！
+                username: [{
+                    required: true,
+                    message: "必填！",
+                    trigger: "blur",
+                }, ],
+                password: [{
+                    required: true,
+                    message: "必填！",
+                    trigger: "blur",
+                }, ],
+            },
+        };
     },
-    created(){},
-    methods:{
-       ...mapActions({
-         login:"user/login"
-       }),
-       submit(){
-         this.$refs.form.validate(valid=>{
-           if(valid){
-              this.login(this.forminfo)
-           }
-         })
-       }
+    created() {},
+    methods: {
+        ...mapActions({
+            login: "user/login",
+        }),
+        submit() {
+            this.$refs.form.validate(async (valid) => {
+                if (valid) {
+                    this.login(this.forminfo);
+                }
+            });
+        },
     },
-    components:{}
-}
-=======
-import { mapActions } from "vuex";
-export default {
-  name: "",
-  data() {
-    return {
-      forminfo: {
-        username: "付晓飞",
-        password: "123456"
-      },
-      rules: {
-        username: [{ required: true, message: "必填", trigger: "blur" }],
-        password: [{ required: true, message: "必填", trigger: "blur" }]
-      }
-    };
-  },
-  components: {},
-  methods: {
-    ...mapActions({
-      login: "user/login"
-    }),
-    submit() {
-      this.$refs.form.validate(valid => {
-        if (valid) {
-          this.login(this.forminfo);
-        }
-      });
-    }
-  }
+    components: {},
 };
->>>>>>> 565f63694d7f1ae58867cae1b8d18c5be258d04f
 </script>
+
 <style scoped>
 /* scoped 表示样式只在当前组件内有效！ */
-.login-bg{
-   width: 100vw;
-   height: 100vh;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   background-image: url("../assets/img/bg.jpg");
-   background-size: 100% 100%;
+.login-bg {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("../assets/img/bg.jpg");
+    background-size: 100% 100%;
 }
-.login-box{
-  background-color: #fff;
-  box-shadow: 0 0 4px 0 rgba(0,0,0,.2);
-  padding: 30px 40px;
-  border-radius: 5px;
-  border:1px solid #eee;
+
+.login-box {
+    background-color: #fff;
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2);
+    padding: 30px 40px;
+    border-radius: 5px;
+    border: 1px solid #eee;
 }
-.login-box h3{
-  line-height: 40px;
-  text-align: center;
-  margin-bottom: 20px;
+
+.login-box h3 {
+    line-height: 40px;
+    text-align: center;
+    margin-bottom: 20px;
 }
-.login-btn{
-  display: block;
-  width: 100%;
+
+.login-btn {
+    display: block;
+    width: 100%;
 }
 </style>

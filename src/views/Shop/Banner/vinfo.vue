@@ -1,23 +1,23 @@
 <template>
-<el-dialog :title="info.isAdd ? '添加管理员':'修改管理员'" @close="cancel" :visible.sync="info.isShow" width="40%">
+<el-dialog :title="info.isAdd ? '添加轮播图' : '修改轮播图'" @close="cancel" :visible.sync="info.isShow" width="40%">
     <!-- 表单 -->
-    <el-form :model="forminfo" ref="form" :rules="rules" label-width="140px">
-        <el-form-item label="管理员角色" prop="roleid">
-            <el-select v-model="forminfo.roleid" placeholder="请选择角色">
-                <el-option v-for="item in rolelist" :key="item.id" :label="item.rolename" :value="item.id"></el-option>
-            </el-select>
+    <el-form :model="forminfo" ref="form" :rules="rules" label-width="100px">
+        <el-form-item label="轮播图名称" prop="title">
+            <el-input v-model="forminfo.title" placeholder="请输入轮播图名称"></el-input>
         </el-form-item>
-        <el-form-item label="管理员名称" prop="username">
-            <el-input v-model="forminfo.username" placeholder="请输入管理员名称"></el-input>
+        <el-form-item label="轮播图图片">
+            <el-upload action :on-preview="see" :auto-upload="false" list-type="picture-card" :limit="1" :on-change="change" :on-remove="remove" :file-list="filelist">
+                <i slot="default" class="el-icon-plus"></i>
+            </el-upload>
+            <el-dialog title="查看图片" :visible.sync="dialogVisible" :append-to-body="true">
+                <img width="100%" :src="dialogImageUrl" alt />
+            </el-dialog>
         </el-form-item>
-        <el-form-item label="管理员密码" prop="password">
-            <el-input v-model="forminfo.password" :placeholder="info.isAdd?'请输入管理员密码':'密码留空表示不修改'"></el-input>
-        </el-form-item>
-        <el-form-item label="管理员状态">
+        <el-form-item label="状态">
             <el-switch v-model="forminfo.status" :active-value="1" :inactive-value="2"></el-switch>
         </el-form-item>
         <el-form-item label>
-            <el-button type="primary" @click="sumbit">提交</el-button>
+            <el-button type="primary" @click="sumbit">立即添加</el-button>
             <el-button type="warning" @click="reset">重置</el-button>
         </el-form-item>
     </el-form>
@@ -27,17 +27,12 @@
 <script>
 // 导入  添加和修改的 请求封装方法！
 import {
-    addUser,
-    editUser
-} from "@/request/user";
-import {
-    mapGetters,
-    mapActions
-} from "vuex";
+    addBanner,
+    editBanner
+} from "@/request/banner";
 let defaultItem = {
-    roleid: "",
-    username: "",
-    password: "",
+    title: "",
+    img: "",
     status: 1, // 状态1正常2禁用
 };
 let resetItem = {
@@ -57,41 +52,41 @@ export default {
     },
     data() {
         return {
+            dialogVisible: false,
+            dialogImageUrl: "",
             forminfo: {
                 ...defaultItem,
             },
             rules: {
                 // 验证规则对象！
-                roleid: [{
-                    required: true,
-                    message: "必填！",
-                    trigger: "blur",
-                }, ],
-                username: [{
+                title: [{
                     required: true,
                     message: "必填！",
                     trigger: "blur",
                 }, ],
             },
+            filelist: [],
         };
     },
-    computed: {
-        ...mapGetters({
-            rolelist: "role/rolelist",
-        }),
-    },
-    mounted() {
-        if (!this.rolelist.length) {
-            this.get_role_list();
-        }
-    },
     methods: {
-        ...mapActions({
-            get_role_list: "role/get_role_list",
-            get_user_list: "user/get_user_list",
-        }),
+        see(file) {
+            console.log(file);
+            this.dialogVisible = true;
+            this.dialogImageUrl = file.url;
+        },
+        change(file, fileList) {
+            this.forminfo.img = file.raw;
+        },
+        remove(file, fileList) {
+            this.forminfo.img = "";
+        },
         setinfo(val) {
-            val.password = "";
+            if (val.img) {
+                this.filelist = [{
+                    name: val.catename,
+                    url: this.$host + val.img,
+                }, ];
+            }
             defaultItem = {
                 ...val,
             };
@@ -100,26 +95,29 @@ export default {
             };
         },
         async sumbit() {
-            if (this.isAdd && !this.forminfo.password) {
-                this.$message.warning("请输入密码");
-                return;
-            }
             // 表单验证！
             this.$refs.form.validate(async (valid) => {
                 if (valid) {
                     // 如果验证通过！
                     let res;
+                    let fd = new FormData();
+                    console.log(this.forminfo);
+                    for (let k in this.forminfo) {
+                        fd.append(k, this.forminfo[k]);
+                    }
                     if (this.info.isAdd) {
                         // 添加还是修改！
-                        res = await addUser(this.forminfo);
+                        res = await addBanner(fd);
+                        console.log(fd);
                     } else {
-                        res = await editUser(this.forminfo);
+                        res = await editBanner(fd);
+                        console.log(fd);
                     }
                     if (res.code == 200) {
                         this.$message.success(res.msg);
                         this.info.isShow = false;
-                        this.get_user_list(); //重新获取角色列表
-                        this.cancel();
+                        this.$parent.update(); //调用父组件的update方法，去更新列表
+                        this.cancel(); // 无论是修改成功还是添加成功，都应该让表单为空！
                     } else {
                         this.$message.error(res.msg);
                     }
@@ -130,7 +128,7 @@ export default {
             if (this.info.isAdd) {
                 //添加时候的数据
                 this.forminfo = {
-                    ...defaultItem,
+                    ...resetItem,
                 };
             } else {
                 //修改时候的数据
@@ -143,6 +141,7 @@ export default {
             this.forminfo = {
                 ...resetItem,
             };
+            this.filelist = [];
         },
     },
     components: {},
